@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width-device-width,initial-scale=1">
+        <meta name="google-signin-client_id" content="695348249258-33cknhitc43aevoj96kn6ugta0ovgg0r.apps.googleusercontent.com">
+        <link rel="stylesheet" href="style.css">
+
+        <script type="text/javascript">
+            /* exported gapiLoaded */
+            /* exported gisLoaded */
+            /* exported handleAuthClick */
+            /* exported handleSignoutClick */
+
+            // TODO(developer): Set to client ID and API key from the Developer Console
+            const CLIENT_ID = '695348249258-33cknhitc43aevoj96kn6ugta0ovgg0r.apps.googleusercontent.com';
+            const API_KEY = 'AIzaSyAL5cIOY6zsqovP5DTBV7SbM2TK2im8PrM';
+
+            // Discovery doc URL for APIs used by the quickstart
+            const DISCOVERY_DOC = 'https://classroom.googleapis.com/$discovery/rest';
+
+            // Authorization scopes required by the API; multiple scopes can be
+            // included, separated by spaces.
+            const SCOPES = 'https://www.googleapis.com/auth/classroom.courses.readonly';
+
+            let tokenClient;
+            let gapiInited = false;
+            let gisInited = false;
+
+            document.getElementById('authorize_button').style.visibility = 'hidden';
+            document.getElementById('signout_button').style.visibility = 'hidden';
+
+            /**
+             * Callback after api.js is loaded.
+             */
+            function gapiLoaded() {
+                gapi.load('client', initializeGapiClient);
+            }
+
+            /**
+             * Callback after the API client is loaded. Loads the
+             * discovery doc to initialize the API.
+             */
+            async function initializeGapiClient() {
+                await gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: [DISCOVERY_DOC],
+                });
+                gapiInited = true;
+                maybeEnableButtons();
+            }
+
+            /**
+             * Callback after Google Identity Services are loaded.
+             */
+            function gisLoaded() {
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: '', // defined later
+                });
+                gisInited = true;
+                maybeEnableButtons();
+            }
+
+            /**
+             * Enables user interaction after all libraries are loaded.
+             */
+            function maybeEnableButtons() {
+                if (gapiInited && gisInited) {
+                    document.getElementById('authorize_button').style.visibility = 'visible';
+                }
+            }
+
+            /**
+             *  Sign in the user upon button click.
+             */
+            function handleAuthClick() {
+                tokenClient.callback = async (resp) => {
+                    if (resp.error !== undefined) {
+                        throw (resp);
+                    }
+                    document.getElementById('signout_button').style.visibility = 'visible';
+                    document.getElementById('authorize_button').innerText = 'Refresh';
+                    await listCourses();
+                };
+
+                if (gapi.client.getToken() === null) {
+                    // Prompt the user to select a Google Account and ask for consent to share their data
+                    // when establishing a new session.
+                    tokenClient.requestAccessToken({prompt: 'consent'});
+                } else {
+                    // Skip display of account chooser and consent dialog for an existing session.
+                    tokenClient.requestAccessToken({prompt: ''});
+                }
+            }
+
+            /**
+             *  Sign out the user upon button click.
+             */
+            function handleSignoutClick() {
+                const token = gapi.client.getToken();
+                if (token !== null) {
+                    google.accounts.oauth2.revoke(token.access_token);
+                    gapi.client.setToken('');
+                    document.getElementById('content').innerText = '';
+                    document.getElementById('authorize_button').innerText = 'Authorize';
+                    document.getElementById('signout_button').style.visibility = 'hidden';
+                }
+            }
+
+            /**
+             * Print the names of the first 10 courses the user has access to. If
+             * no courses are found an appropriate message is printed.
+             */
+            async function listCourses() {
+                let response;
+                try {
+                    response = await gapi.client.classroom.courses.list({
+                        pageSize: 10,
+                    });
+                } catch (err) {
+                    document.getElementById('content').innerText = err.message;
+                    return;
+                }
+
+                const courses = response.result.courses;
+                if (!courses || courses.length == 0) {
+                    document.getElementById('content').innerText = 'No courses found.';
+                    return;
+                }
+                // Flatten to string to display
+                const output = courses.reduce(
+                    (str, course) => `${str}${course.name}\n`,
+                    'Courses:\n');
+                document.getElementById('content').innerText = output;
+            }
+
+            async function listAllAssignments(courses) {
+
+                try {
+                    const coursesResponse = await gapi.client.classroom.courses.list();
+                    let allAssignments = '';
+                    for (const course of courses) {
+                        try {
+                            const assignmentResponse = await gapi.client.classroom.courses.courseWork.list({
+                                courseId: course.id,
+                            });
+                            const assignments = assignmentResponse.result.courseWork;
+
+                            if (assignments && assignments.length > 0) {
+                                allAssignments += `Assignments for ${course.name}:\n`;
+                                assignments.forEach((assignment) => {
+                                    allAssignments += `-${assignment.title} (Due: ${assignment.dueDate ? assignment.dueDate : 'No due date.'})\n`
+                                });
+                            } else {
+                                allAssignments += `No assignments found for ${course.name}.\n`;
+                            }
+                        } catch (err) {
+                            allAssignments += `Error fetcihng assignments for ${course.name}: ${err.message}\n`;
+                        }
+                    }
+
+                    document.getElementById('assignments').innerText = allAssignments;
+                } catch (err) {
+                    document.getElementById('assignments').innerText = `Error fetching courses: ${err.message}`;
+                }
+            }
+        </script>
+        <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+        <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="https://apis.google.com/js/api.js"></script>
+        <script src="app.js"></script>
+        <title>Taskly</title>
+    </head>
+    <body>
+        <button class="auth" id="authorize_button" onclick="handleAuthClick()">Sign In</button>
+        <button class="auth" id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+        <hr>
+        <h1>Taskly</h1>
+        <h2>To-Do List</h2>
+        <h3>From Google Classroom</h3>
+        <button id="listcourses" onclick="listAllAssignments()">Load Courses</button>
+        <div id="content" style="white-space: pre-wrap;"></div>
+        <div id="assignments" style="white-space: pre-wrap;"></div>
+        <h3>Personal</h3>
+        <button class="tasks">Add Tasks</button>
+        <button class="tasks">Remove Tasks</button>
+        <button class="tasks">Edit Tasks</button>
+        <h2>Grade Calculator</h2>
+        <h2>Progress Tracker/Focus Timer</h2>
+        <h2>COMING SOON</h2>
+        <h3>Peer Collaboration</h3>
+        <h3>AI Task Prioritization and AI Study Sugestions</h3>
+        <h3>Custom Notifications</h3>
+    </body>
+</html>
