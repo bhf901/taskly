@@ -1,0 +1,197 @@
+html {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid black;
+    user-select: none;
+}
+
+.header button {
+    padding: 10px;
+    background-color: white;
+    font-family: 'Lato', sans-serif;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
+}
+
+.header p {
+    padding: 10px;
+}
+
+.header button:hover {
+    background-color: lightgray;
+}
+
+.header a {
+    margin-left: auto;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.header a:hover {
+    background-color: lightgray;
+}
+
+.timeModule {
+    text-align: center;
+    user-select: none;
+}
+
+.timeModule h1 {
+    font-size: 50px;
+    margin: 10px 0 0 0;
+}
+
+.timeModule h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#dateSettings {
+    display: none;
+    top: 50px;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1000;
+    width: 50%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.timeModule button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.timeModule button:hover {
+    background-color: lightgray;
+}
+
+.timeModule button:active {
+    background-color: gray;
+}
+
+.timer {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    text-align: center;
+    width: 50%;
+}
+
+.timer:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer input {
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    transition: border 0.2s ease;
+    outline: none;
+    width: 25%;
+}
+
+.timer input:focus {
+    border: 3px solid black;
+}
+
+.timer button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.timer button:hover {
+    background-color: lightgray;
+}
+
+.timer button:active {
+    background-color: gray;
+}
+
+.betaNotice {
+    display: flex;
+    background-color: lightblue;
+    padding: 10px;
+}
+
+.betaNotice p {
+    margin: 5px 0 0 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.betaNotice button {
+    background-color: lightblue;
+    border: none;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.betaNotice button:hover {
+    background-color: #578d9a;
+}
+
+.betaNotice img {
+    justify-content: center;
+}
+
+#colorSelector {
+    outline: none;
+}
+
+#redValue {
+    width: 30%;
+}
+
+#greenValue {
+    width: 30%;
+}
+
+#blueValue {
+    width: 30%;
+}
+
+#customColors {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
