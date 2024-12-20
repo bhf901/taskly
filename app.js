@@ -12,17 +12,18 @@ function getTime() {
     const timeInText = document.getElementById('currentTime');
     const dateInText = document.getElementById('currentDate');
     const selectedColor = document.getElementById('colorSelector').value;
+    const militaryTime = document.getElementById('militaryTime');
 
     let daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     if (rawHour < 12) {
         amOrPm = 'AM';
-    } else if (rawHour > 12) {
+    } else if (rawHour > 12 && !militaryTime.checked) {
         amOrPm = 'PM';
         rawHour -= 12;
-    } else {
-        amOrPm = 'PM';
+    } else if (rawHour > 12 && militaryTime.checked) {
+        // does nothing
     }
 
     if (rawMinute < 10) {
@@ -33,10 +34,21 @@ function getTime() {
         rawSecond = `0${rawSecond}`;
     }
 
-    if (secondsToggle.checked) {
-        timeInText.textContent = `${rawHour}:${rawMinute}:${rawSecond} ${amOrPm}`;
+    if (militaryTime.checked) {
+        if (rawHour < 10) {
+            rawHour = `0${rawHour}`;
+        }
+        if (secondsToggle.checked) {
+            timeInText.textContent = `${rawHour}:${rawMinute}:${rawSecond}`;
+        } else {
+            timeInText.textContent = `${rawHour}:${rawMinute}`;
+        }
     } else {
-        timeInText.textContent = `${rawHour}:${rawMinute} ${amOrPm}`;
+        if (secondsToggle.checked) {
+            timeInText.textContent = `${rawHour}:${rawMinute}:${rawSecond} ${amOrPm}`;
+        } else {
+            timeInText.textContent = `${rawHour}:${rawMinute} ${amOrPm}`;
+        }
     }
 
     dateInText.textContent = `${daysOfWeek[rawDayOfWeek]}, ${monthsOfYear[rawMonth]} ${rawDay}, ${rawYear}`;
@@ -83,4 +95,12 @@ document.addEventListener('click', (event) => {
     if (!timeSettingsMenu.contains(event.target) && !timeSettingsButton.contains(event.target)) {
         timeSettingsMenu.style.display = 'none';
     }
+});
+
+const feedbackForm = document.getElementById('feedbackForm');
+const feedbackSubmit = document.getElementById('submitButton');
+
+feedbackSubmit.addEventListener('click', () => {
+    feedbackForm.submit();
+    feedbackForm.reset();
 });
