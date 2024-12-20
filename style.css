@@ -195,3 +195,86 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+.feedback {
+    display: block;
+    width: 50%;
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.feedback:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.feedback input {
+    width: 90%;
+    font-family: 'Lato';
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+.feedback input:focus {
+    border: 3px solid black;
+}
+
+.feedback textarea {
+    width: 90%;
+    font-family: 'Lato';
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    outline: none;
+    transition: border 0.2s ease;
+    resize: none;
+    overflow: auto;
+}
+
+.feedback textarea:focus {
+    border: 3px solid black;
+}
+
+.feedback button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feedback button:hover {
+    background-color: lightgray;
+}
+
+.feedback button:active {
+    background-color: gray;
+}
+
+#logoUpload button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#logoUpload button:hover {
+    background-color: lightgray;
+}
+
+#logoUpload button:active {
+    background-color: gray;
+}
