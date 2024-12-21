@@ -85,10 +85,13 @@ let timerHours = document.getElementById('timerHours').value;
 let timerMinutes = document.getElementById('timerMinutes').value;
 let timerSeconds = document.getElementById('timerSeconds').value;
 
+const errorList = document.getElementById('fullErrors');
+
 function closeBetaMenu() {
     let betaMenuObject = document.getElementById('betaNotice');
 
     betaMenuObject.style.display = 'none';
+    errorList.style.display = 'none';
 }
 
 document.addEventListener('click', (event) => {
@@ -104,3 +107,17 @@ feedbackSubmit.addEventListener('click', () => {
     feedbackForm.submit();
     feedbackForm.reset();
 });
+
+let issueListStatus = false;
+
+function showIssues() {
+    if (issueListStatus === false) {
+        errorList.style.display = 'block';
+        document.getElementById('errorList').textContent = 'hide the full list of known issues';
+        issueListStatus = true;
+    } else if (issueListStatus === true) {
+        errorList.style.display = 'none';
+        document.getElementById('errorList').textContent = 'view the full list of known issues';
+        issueListStatus = false;
+    }
+}
