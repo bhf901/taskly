@@ -278,3 +278,18 @@ html {
 #logoUpload button:active {
     background-color: gray;
 }
+
+#errorList {
+    font-size: 16px;
+    padding: 10px;
+    color: blue;
+    margin: 5px;
+}
+
+#fullErrors {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: none;
+}
