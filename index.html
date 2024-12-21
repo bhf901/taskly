@@ -21,8 +21,18 @@
         </div>
         <div id="betaNotice" class="betaNotice">
             <img src="info-icon.png" width="38.4" height="38.4">
-            <p>taskly is currently in beta. some features may not work as expected. thanks for helping us make taskly better!</p>
+            <p>taskly is currently in beta. some features may not work as expected. thanks for helping us make taskly better!<button id="errorList" onclick="showIssues()">view the full list of known issues</button></p>
             <button onclick="closeBetaMenu()"><img src="close-icon.png" width="38.4" height="38.4"></button>
+        </div>
+        <div id="fullErrors">
+            <h2>all known issues</h2>
+            <p>taskly 0.1.2 (current release)</p>
+            <ul>
+                <li>taskly is a google-integrated product, which is causing some issues on webkit-based browsers like safari with tasks such as loading google-based fonts and connecting to the google api. everything should have backups (such as fonts) but if not please report it using the feedback form.</li>
+                <li>taskly is a beta product and has not been optimized for mobile devices yet. therefore, there will be website rendering issues on some smaller mobile devices.</li>
+                <li>timers are extremely inconsistent on taskly and often don't work. they will be fixed in the next update but are not functional at the time.</li>
+                <li>there is an issue with the feedback form in which the form is submitted before all required fields have been filled out. this will be fixed in the next update.</li>
+            </ul>
         </div>
         <div class="timeModule">
             <h1 id="currentTime"></h1>
@@ -74,7 +84,7 @@
                 <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
                 <textarea id="message" name="message" placeholder="message*" required></textarea><br>
                 <label for="logoUpload">do you have a logo idea for taskly? submit it here.</label><br>
-                <input type="file" id="logoUpload" name="logoUpload"><br>
+                <input type="file" id="logoUpload" name="logoUpload">
                 <button type="reset">🚫 clear</button>
                 <button id="submitButton">✉️ send</button>
             </form>
