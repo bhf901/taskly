@@ -10,12 +10,30 @@ function getTime() {
     let amOrPm;
     const secondsToggle = document.getElementById('secondsToggle')
     const timeInText = document.getElementById('currentTime');
+    const timeZoneInText = document.getElementById('timeZone');
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const dateInText = document.getElementById('currentDate');
     const selectedColor = document.getElementById('colorSelector').value;
     const militaryTime = document.getElementById('militaryTime');
 
+    const timeZoneInUTC = () => {
+        const offset = time.getTimezoneOffset();
+        const offsetHours = Math.abs(Math.floor(offset / 60));
+        const offsetMinutes = Math.abs(offset % 60);
+        const positiveOrNegative = offset <= 0 ? '+' : '-';
+        return `UTC${positiveOrNegative}${offsetHours}${offsetMinutes === 0 ? "" : `${String(offsetMinutes).padStart(2, '0')}`}`;
+    }
+
     let daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const timeZoneSelector = document.getElementById('timeZoneToggle');
+
+    if (timeZoneSelector.checked) {
+        timeZoneInText.textContent = `${timeZoneInUTC()} | ${timeZone}`;
+    } else {
+        timeZoneInText.textContent = '';
+    }
 
     if (rawHour < 12) {
         amOrPm = 'AM';
@@ -52,23 +70,23 @@ function getTime() {
     }
 
     dateInText.textContent = `${daysOfWeek[rawDayOfWeek]}, ${monthsOfYear[rawMonth]} ${rawDay}, ${rawYear}`;
-    let customColorContainer = document.getElementById('customColors');
-    let customColorR = document.getElementById('redValue').value;
-    let customColorG = document.getElementById('greenValue').value;
-    let customColorB = document.getElementById('blueValue').value;
+    const customColorContainer = document.getElementById('customColors');
+    const colorPicker = document.getElementById('customColor').value;
 
     if (selectedColor !== 'custom') {
-        timeInText.style.color = selectedColor;
-        dateInText.style.color = selectedColor;
         customColorContainer.style.display = 'none';
+        timeInText.style.color = selectedColor;
+        timeZoneInText.style.color = selectedColor;
+        dateInText.style.color = selectedColor;
     } else if (selectedColor === 'custom') {
         customColorContainer.style.display = 'flex';
-        timeInText.style.color = `rgba(${customColorR}, ${customColorG}, ${customColorB})`;
-        dateInText.style.color = `rgba(${customColorR}, ${customColorG}, ${customColorB})`;
+        timeInText.style.color = colorPicker;
+        timeZoneInText.style.color = colorPicker;
+        dateInText.style.color = colorPicker;
     }
 }
 
-setInterval(getTime, 1000);
+setInterval(getTime, 1);
 
 const timeSettingsMenu = document.getElementById('dateSettings');
 const timeSettingsButton = document.getElementById('timeSettingsToggle');
@@ -102,10 +120,24 @@ document.addEventListener('click', (event) => {
 
 const feedbackForm = document.getElementById('feedbackForm');
 const feedbackSubmit = document.getElementById('submitButton');
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const formStatus = () => {
+    const formName = document.getElementById('name').value;
+    const formEmail = document.getElementById('email').value.trim();
+    const formSubject = document.getElementById('subject').value;
+    const formBody = document.getElementById('message').value;
+    return !!(formName && formEmail && emailRegex.test(formEmail) && formSubject && formBody);
+}
 
 feedbackSubmit.addEventListener('click', () => {
-    feedbackForm.submit();
-    feedbackForm.reset();
+    if (formStatus() === true) {
+        feedbackForm.submit();
+        feedbackForm.reset();
+        document.getElementById('formMessage').textContent = '';
+    } else {
+        document.getElementById('formMessage').textContent = 'Please fill out all required fields.';
+    }
 });
 
 let issueListStatus = false;
