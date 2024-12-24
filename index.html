@@ -17,7 +17,7 @@
             <button>account</button>
             <button>settings</button>
             <button>help</button>
-            <a href="https://corporate.fieldstoncalculator.com">developed by Fieldston Calculator</a>
+            <a href="https://corporate.fieldstoncalculator.com" target="_blank">developed by Fieldston Calculator</a>
         </div>
         <div id="betaNotice" class="betaNotice">
             <img src="info-icon.png" width="38.4" height="38.4">
@@ -34,8 +34,9 @@
                 <li>there is an issue with the feedback form in which the form is submitted before all required fields have been filled out. this will be fixed in the next update.</li>
             </ul>
         </div>
-        <div class="timeModule">
+        <div id="timeModule" class="timeModule">
             <h1 id="currentTime"></h1>
+            <h2 id="timeZone"></h2>
             <h2 id="currentDate"></h2>
             <button id="timeSettingsToggle" onclick="togglePopup()">⏰ date and time settings</button>
         </div>
@@ -46,7 +47,10 @@
             <label for="militaryTime">toggle military time</label>
             <input type="checkbox" id="militaryTime" name="militaryTime">
             <br>
-            <label for="colorSelector">text color</label>
+            <label for="timeZoneToggle">toggle time zone identifier</label>
+            <input type="checkbox" id="timeZoneToggle" name="timeZoneToggle" checked>
+            <br>
+            <label for="colorSelector">clock color</label>
             <select id="colorSelector">
                 <option value="rgba(0, 0, 0)">black</option>
                 <option value="rgba(255, 255, 255)">white</option>
@@ -61,18 +65,16 @@
             </select>
             <br>
             <div id="customColors">
-                <input type="number" id="redValue" name="redValue" placeholder="r">
-                <input type="number" id="greenValue" name="greenValue" placeholder = "g">
-                <input type="number" id="blueValue" name="blueValue" placeholder="b">
+                <input type="color" id="customColor" name="customColor">
             </div>
         </div>
         <div class="timer">
             <h2>timers</h2>
-            <input type="number" id="timerHours" placeholder="hours">
+            <input type="number" id="timerHours" placeholder="hours" min="0" max="99">
             :
-            <input type="number" id="timerMinutes" placeholder="minutes">
+            <input type="number" id="timerMinutes" placeholder="minutes" min="0" max="59">
             :
-            <input type="number" id="timerSeconds" placeholder="seconds">
+            <input type="number" id="timerSeconds" placeholder="seconds" min="0" max="59">
             <button onclick="setTimer()">create timer</button>
             <p id="timerPresenter"></p>
         </div>
@@ -87,6 +89,7 @@
                 <input type="file" id="logoUpload" name="logoUpload">
                 <button type="reset">🚫 clear</button>
                 <button id="submitButton">✉️ send</button>
+                <p id="formMessage"></p>
             </form>
         </div>
         <script src="app.js"></script>
