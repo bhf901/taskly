@@ -1,5 +1,5 @@
-html {
-    font-family: 'Lato', sans-serif;
+body {
+    font-family: 'Lato', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -9,7 +9,7 @@ html {
     align-items: center;
     box-sizing: border-box;
     width: 100%;
-    padding: 0;
+    padding: 5px;
     margin: 0;
     border-bottom: 1px solid black;
     user-select: none;
@@ -178,18 +178,6 @@ html {
     outline: none;
 }
 
-#redValue {
-    width: 30%;
-}
-
-#greenValue {
-    width: 30%;
-}
-
-#blueValue {
-    width: 30%;
-}
-
 #customColors {
     display: none;
     justify-content: center;
@@ -261,7 +249,7 @@ html {
     background-color: gray;
 }
 
-#logoUpload button {
+/*#logoUpload button {
     margin: 10px;
     padding: 5px;
     border: 1px solid black;
@@ -277,7 +265,7 @@ html {
 
 #logoUpload button:active {
     background-color: gray;
-}
+}*/
 
 #errorList {
     font-size: 16px;
@@ -292,4 +280,15 @@ html {
     border: 1px solid black;
     border-radius: 10px;
     display: none;
+}
+
+#formMessage {
+    color: red;
+}
+
+#customColor {
+    padding: 0;
+    border: none;
+    background-color: white;
+    border-radius: 10px;
 }
