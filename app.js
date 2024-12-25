@@ -1,3 +1,41 @@
+if (Notification.permission !== 'granted') {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            console.log('User has allowed notifications.');
+            const welcomeToNotifications = new Notification("taskly notification manager", {
+                body: "this is how you'll receive notifications from taskly applications such as timers and alarms."
+            });
+        } else {
+            console.log('User has blocked access to notifications.');
+        }
+    });
+}
+
+const quotes = [
+    '"strive not to be a success, but rather to be of value" -albert einstein',
+    '"two roads diverged in a wood, and i—i took the one less traveled by, and that has made all the difference." -robert frost',
+    `"you miss 100% of the shots you don't take." -wayne gretzky`,
+    '"the most difficult thing is the decision to act, the rest is merely tenacity." -amelia earhart',
+    '"every strike brings me closer to the next home run." -babe ruth',
+    '"life is 10% of what happens to me and 90% of how i react to it." -charles swindoll',
+    '"80% of success is showing up." -woody allen',
+    '"the best revenge is massive success." -frank sinatra',
+    '"there is only one way to avoid criticism: do nothing, say nothing, and be nothing." -aristotle',
+    `"i didn't fail the test. i just found 100 ways to do it wrong." -benjamin franklin`
+];
+
+const quoteText = document.getElementById('inspirationalQuote');
+const quoteCheckbox = document.getElementById('quoteToggle');
+quoteText.textContent = quotes[Math.floor(Math.random() * 10)];
+
+function quoteToggle () {
+    if (quoteCheckbox.checked) {
+        quoteText.textContent = quotes[Math.floor(Math.random() * 10)];
+    } else {
+        quoteText.textContent = '';
+    }
+}
+
 function getTime() {
     let time = new Date();
     let rawDayOfWeek = time.getDay();
@@ -15,6 +53,8 @@ function getTime() {
     const dateInText = document.getElementById('currentDate');
     const selectedColor = document.getElementById('colorSelector').value;
     const militaryTime = document.getElementById('militaryTime');
+    const timeMessage = document.getElementById('timeMessage');
+    const timeMessageCheckbox = document.getElementById('messageToggle');
 
     const timeZoneInUTC = () => {
         const offset = time.getTimezoneOffset();
@@ -35,13 +75,31 @@ function getTime() {
         timeZoneInText.textContent = '';
     }
 
-    if (rawHour < 12) {
+    if (rawHour < 12 && rawHour > 0) {
         amOrPm = 'AM';
+        if (timeMessageCheckbox.checked) {
+            timeMessage.textContent = '☀️ good morning! what are your plans for the day?';
+        } else {
+            timeMessage.textContent = '';
+        }
     } else if (rawHour > 12 && !militaryTime.checked) {
         amOrPm = 'PM';
         rawHour -= 12;
+        if (timeMessageCheckbox.checked) {
+            timeMessage.textContent = "🌅 you've made it to the second half of the day! what have you accomplished so far?"
+        } else {
+            timeMessage.textContent = '';
+        }
     } else if (rawHour > 12 && militaryTime.checked) {
-        // does nothing
+        if (timeMessageCheckbox.checked) {
+            timeMessage.textContent = "🌅 you've made it to the second half of the day! what have you accomplished so far?"
+        } else {
+            timeMessage.textContent = '';
+        }
+    } else if (rawHour === 0 && !militaryTime.checked) {
+        rawHour = 12;
+        amOrPm = 'AM';
+        timeMessage.textContent = '☀️ good morning! what are your plans for the day?';
     }
 
     if (rawMinute < 10) {
@@ -78,11 +136,15 @@ function getTime() {
         timeInText.style.color = selectedColor;
         timeZoneInText.style.color = selectedColor;
         dateInText.style.color = selectedColor;
+        timeMessage.style.color = selectedColor;
+        quoteText.style.color = selectedColor;
     } else if (selectedColor === 'custom') {
         customColorContainer.style.display = 'flex';
         timeInText.style.color = colorPicker;
         timeZoneInText.style.color = colorPicker;
         dateInText.style.color = colorPicker;
+        timeMessage.style.color = colorPicker;
+        quoteText.style.color = colorPicker;
     }
 }
 
@@ -98,10 +160,6 @@ function togglePopup() {
         timeSettingsMenu.style.display = 'block';
     }
 }
-
-let timerHours = document.getElementById('timerHours').value;
-let timerMinutes = document.getElementById('timerMinutes').value;
-let timerSeconds = document.getElementById('timerSeconds').value;
 
 const errorList = document.getElementById('fullErrors');
 
@@ -152,4 +210,105 @@ function showIssues() {
         document.getElementById('errorList').textContent = 'view the full list of known issues';
         issueListStatus = false;
     }
+}
+
+let timerHours = document.getElementById('timerHours').value;
+let timerMinutes = document.getElementById('timerMinutes').value;
+let timerSeconds = document.getElementById('timerSeconds').value;
+let timerValue;
+let timerNameForNotification;
+
+function setTimer() {
+    timerHours = parseInt(document.getElementById('timerHours').value);
+    timerMinutes = parseInt(document.getElementById('timerMinutes').value);
+    timerSeconds = parseInt(document.getElementById('timerSeconds').value);
+
+    if (isNaN(timerHours)) {
+        timerHours = 0;
+    }
+
+    if (isNaN(timerMinutes)) {
+        timerMinutes = 0;
+    }
+
+    if (isNaN(timerSeconds)) {
+        timerSeconds = 0;
+    }
+
+    let secondsValue = parseInt(timerSeconds, 10);
+    if (secondsValue < 0) {
+        timerSeconds = 0;
+    } else if (secondsValue > 59) {
+        timerSeconds = 59;
+    }
+
+    let minutesValue = parseInt(timerMinutes, 10);
+    if (minutesValue < 0) {
+        timerMinutes = 0;
+    } else if (minutesValue > 59) {
+        timerMinutes = 59;
+    }
+
+    if (timerName.value === '') {
+        timerNameInText.textContent = 'untitled timer';
+        timerNameForNotification = 'untitled timer';
+    } else {
+        timerNameInText.textContent = timerName.value;
+        timerNameForNotification = timerName.value;
+    }
+
+    timerInterval = setInterval(runTimer, 1000);
+}
+
+function alarmRunner() {
+    const timerEndAudio = document.getElementById('timerAlarm');
+    if (Notification.permission === 'granted') {
+        const timerIsDone = new Notification("taskly timer client", {
+            body: `your timer on taskly has elapsed. (name: ${timerNameForNotification})`,
+            icon: 'taskly-timer-icon.png'
+        });
+    }
+    timerEndAudio.play();
+    // alert('Your timer has ended.');
+    clearTimer();
+}
+
+let timerName = document.getElementById('timerName');
+let timerNameInText = document.getElementById('timerNameShown');
+
+function runTimer() {
+
+    function padZero(value) {
+        return value.toString().padStart(2, '0');
+    }
+
+    timerValue = `${padZero(timerHours)}:${padZero(timerMinutes)}:${padZero(timerSeconds)}`;
+    // timerName.value === '' ? timerNameInText.textContent = 'untitled timer' : timerNameInText.textContent = timerName.value;
+    document.getElementById('timerPresenter').textContent = timerValue;
+    document.getElementById('clearTimer').style.display = 'inline-block';
+
+    timerSeconds -= 1;
+
+    if (timerSeconds < 0) {
+        timerSeconds = 59;
+        timerMinutes -= 1;
+    }
+
+    if (timerMinutes < 0) {
+        timerMinutes = 59;
+        timerHours -= 1;
+    }
+
+    if (timerHours < 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timerPresenter').textContent = '00:00:00';
+        alarmRunner();
+    }
+}
+
+function clearTimer() {
+    clearInterval(timerInterval);
+    timerNameInText.textContent = '';
+    document.getElementById('timerPresenter').textContent = '';
+    document.getElementById('clearTimer').style.display = 'none';
 }
