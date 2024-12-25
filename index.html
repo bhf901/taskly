@@ -22,7 +22,7 @@
         <div id="betaNotice" class="betaNotice">
             <img src="info-icon.png" width="38.4" height="38.4">
             <p>taskly is currently in beta. some features may not work as expected. thanks for helping us make taskly better!<button id="errorList" onclick="showIssues()">view the full list of known issues</button></p>
-            <button onclick="closeBetaMenu()"><img src="close-icon.png" width="38.4" height="38.4"></button>
+            <button onclick="closeBetaMenu()"><img src="close-icon.png" alt="an X icon, used to close a pop-up alert." width="38.4" height="38.4"></button>
         </div>
         <div id="fullErrors">
             <h2>all known issues</h2>
@@ -43,6 +43,8 @@
         </div>
         <div id="timeModule" class="timeModule">
             <h1 id="currentTime"></h1>
+            <p id="timeMessage"></p>
+            <p id="inspirationalQuote"></p>
             <h2 id="timeZone"></h2>
             <h2 id="currentDate"></h2>
             <button id="timeSettingsToggle" onclick="togglePopup()">⏰ date and time settings</button>
@@ -56,6 +58,12 @@
             <br>
             <label for="timeZoneToggle">toggle time zone identifier</label>
             <input type="checkbox" id="timeZoneToggle" name="timeZoneToggle" checked>
+            <br>
+            <label for="messageToggle">toggle message</label>
+            <input type="checkbox" id="messageToggle" name="messageToggle" checked>
+            <br>
+            <label for="quoteToggle">toggle quotes</label>
+            <input type="checkbox" id="quoteToggle" name="quoteToggle" onclick="quoteToggle()" checked>
             <br>
             <label for="colorSelector">clock color</label>
             <select id="colorSelector">
@@ -75,29 +83,38 @@
                 <input type="color" id="customColor" name="customColor">
             </div>
         </div>
-        <div class="timer">
-            <h2>timers</h2>
-            <input type="number" id="timerHours" placeholder="hours" min="0" max="99">
-            :
-            <input type="number" id="timerMinutes" placeholder="minutes" min="0" max="59">
-            :
-            <input type="number" id="timerSeconds" placeholder="seconds" min="0" max="59">
-            <button onclick="setTimer()">create timer</button>
-            <p id="timerPresenter"></p>
-        </div>
-        <div class="feedback">
-            <h2>feedback</h2>
-            <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
-                <input type="text" id="name" name="name" placeholder="name*" required><br>
-                <input type="text" id="email" name="email" placeholder="email*" required><br>
-                <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
-                <textarea id="message" name="message" placeholder="message*" required></textarea><br>
-                <label for="logoUpload">do you have a logo idea for taskly? submit it here.</label><br>
-                <input type="file" id="logoUpload" name="logoUpload">
-                <button type="reset">🚫 clear</button>
-                <button id="submitButton">✉️ send</button>
-                <p id="formMessage"></p>
-            </form>
+        <div class="mainArea">
+            <div class="timer">
+                <h2>timers</h2>
+                <input type="text" id="timerName" placeholder="timer name">
+                <br>
+                <input type="number" id="timerHours" placeholder="hours" min="0">
+                :
+                <input type="number" id="timerMinutes" placeholder="minutes" min="0" max="59">
+                :
+                <input type="number" id="timerSeconds" placeholder="seconds" min="0" max="59">
+                <button onclick="setTimer()">create timer</button>
+                <div class="actualTimer">
+                    <p id="timerNameShown"></p>
+                    <p id="timerPresenter"></p>
+                    <button id="clearTimer" onclick="clearTimer()">🛑</button>
+                    <audio id="timerAlarm" src="taskly_timer_cut.m4a" preload="auto" style="display: none;"></audio>
+                </div>
+            </div>
+            <div class="feedback">
+                <h2>feedback</h2>
+                <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
+                    <input type="text" id="name" name="name" placeholder="name*" required><br>
+                    <input type="text" id="email" name="email" placeholder="email*" required><br>
+                    <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
+                    <textarea id="message" name="message" placeholder="message*" required></textarea><br>
+                    <label for="logoUpload">do you have a logo idea for taskly? submit it here.</label><br>
+                    <input type="file" id="logoUpload" name="logoUpload">
+                    <button type="reset">🚫 clear</button>
+                    <button id="submitButton">✉️ send</button>
+                    <p id="formMessage"></p>
+                </form>
+            </div>
         </div>
         <script src="app.js"></script>
     </body>
