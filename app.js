@@ -17,7 +17,7 @@ const quotes = [
     `"you miss 100% of the shots you don't take." -wayne gretzky`,
     '"the most difficult thing is the decision to act, the rest is merely tenacity." -amelia earhart',
     '"every strike brings me closer to the next home run." -babe ruth',
-    '"life is 10% of what happens to me and 90% of how i react to it." -charles swindoll',
+    '"life is 10% what happens to me and 90% how i react to it." -charles swindoll',
     '"80% of success is showing up." -woody allen',
     '"the best revenge is massive success." -frank sinatra',
     '"there is only one way to avoid criticism: do nothing, say nothing, and be nothing." -aristotle',
