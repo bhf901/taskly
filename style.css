@@ -18,7 +18,7 @@ body {
 .header button {
     padding: 10px;
     background-color: white;
-    font-family: 'Lato', 'Helvetica Neue', sans-serif;
+    font-family: 'Lato', sans-serif;
     border: none;
     cursor: pointer;
     margin-left: 5px;
@@ -201,7 +201,7 @@ body {
 
 .feedback input {
     width: 90%;
-    font-family: 'Lato', 'Helvetica Neue', sans-serif;
+    font-family: 'Lato';
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -216,7 +216,7 @@ body {
 
 .feedback textarea {
     width: 90%;
-    font-family: 'Lato', 'Helvetica Neue', sans-serif;
+    font-family: 'Lato';
     padding: 5px;
     margin: 5px;
     border-radius: 10px;
@@ -291,4 +291,39 @@ body {
     border: none;
     background-color: white;
     border-radius: 10px;
+}
+
+#timeMessage {
+    margin: 0;
+    display: block;
+    font-style: italic;
+}
+
+#inspirationalQuote {
+    margin: 0;
+    display: block;
+}
+
+.mainArea {
+    display: flex;
+}
+
+#clearTimer {
+    display: none;
+}
+
+.actualTimer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#timerPresenter {
+    font-size: 30px;
+    color: black;
+    user-select: none;
+}
+
+#timerNameShown {
+    margin-right: auto;
 }
