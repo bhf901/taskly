@@ -37,7 +37,7 @@ function quoteToggle () {
 }
 
 function getTime() {
-    let time = new Date();
+    let time = new Date()
     let rawDayOfWeek = time.getDay();
     let rawMonth = time.getMonth();
     let rawDay = time.getDate();
@@ -217,6 +217,7 @@ let timerMinutes = document.getElementById('timerMinutes').value;
 let timerSeconds = document.getElementById('timerSeconds').value;
 let timerValue;
 let timerNameForNotification;
+let timerInterval;
 
 function setTimer() {
     timerHours = parseInt(document.getElementById('timerHours').value);
@@ -260,8 +261,13 @@ function setTimer() {
     timerInterval = setInterval(runTimer, 1000);
 }
 
+const timerAlarmPopup = document.getElementById('timerAlarmPopup');
+const timerEndAudio = document.getElementById('timerAlarm');
+const timerAlertText = document.getElementById('timerOrAlarm');
+
+let buttonIntervalAlarm;
+
 function alarmRunner() {
-    const timerEndAudio = document.getElementById('timerAlarm');
     if (Notification.permission === 'granted') {
         const timerIsDone = new Notification("taskly timer client", {
             body: `your timer on taskly has elapsed. (name: ${timerNameForNotification})`,
@@ -269,8 +275,14 @@ function alarmRunner() {
         });
     }
     timerEndAudio.play();
-    // alert('Your timer has ended.');
+    timerAlertText.textContent = 'your timer has elapsed.';
+    document.getElementById('dismissNudge').textContent = 'dismiss nudge (15)';
+    timerAlarmPopup.style.display = 'flex';
     clearTimer();
+    dismissNudgeButtonTimer = 15;
+    clearInterval(buttonIntervalAlarm);
+    buttonIntervalAlarm = setInterval(dismissButtonTimer, 1000);
+    setTimeout(closeTimerAlert, 15000);
 }
 
 let timerName = document.getElementById('timerName');
@@ -311,4 +323,87 @@ function clearTimer() {
     timerNameInText.textContent = '';
     document.getElementById('timerPresenter').textContent = '';
     document.getElementById('clearTimer').style.display = 'none';
+}
+
+function closeTimerAlert() {
+    timerEndAudio.pause();
+    timerEndAudio.currentTime = 0;
+    timerAlarmPopup.style.display = 'none'
+}
+
+let dismissNudgeButtonTimer;
+
+function dismissButtonTimer() {
+    document.getElementById('dismissNudge').textContent = `dismiss nudge (${dismissNudgeButtonTimer})`
+
+    if (dismissNudgeButtonTimer === 0) {
+        dismissNudgeButtonTimer = 0;
+        document.getElementById('dismissNudge').textContent = `dismiss nudge (${dismissNudgeButtonTimer})`
+    } else {
+        dismissNudgeButtonTimer -= 1;
+        document.getElementById('dismissNudge').textContent = `dismiss nudge (${dismissNudgeButtonTimer})`
+    }
+}
+
+let alarmHours;
+let alarmMinutes;
+let alarmCheck;
+let alarmNameForNotification;
+
+function setAlarm() {
+    const alarmTime = document.getElementById('alarmSelect').value;
+    document.getElementById('clearAlarm').style.display = 'flex';
+    let alarmName = document.getElementById('alarmName');
+    let shownAlarmName = document.getElementById('alarmNameShown');
+    if (alarmName.value !== '') {
+        shownAlarmName.textContent = alarmName.value;
+        alarmNameForNotification = alarmName.value;
+    } else {
+        shownAlarmName.textContent = 'untitled alarm';
+        alarmNameForNotification = 'untitled alarm';
+    }
+    [alarmHours, alarmMinutes] = alarmTime.split(':');
+    if (parseInt(alarmHours) < 12 && parseInt(alarmHours) !== 0) {
+        document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} AM`;
+    } else if (parseInt(alarmHours) > 12) {
+        document.getElementById('alarmPresenter').textContent = `${alarmHours - 12}:${alarmMinutes} PM`;
+    } else if (parseInt(alarmHours) === 0) {
+        document.getElementById('alarmPresenter').textContent = `12:${alarmMinutes} AM`;
+    } else if (parseInt(alarmHours) === 12) {
+        document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} PM`;
+    }
+
+    alarmCheck = setInterval(runAlarm, 1000);
+}
+
+function runAlarm() {
+    const alarmTime = new Date();
+    if (parseInt(alarmHours) === alarmTime.getHours() && parseInt(alarmMinutes) === alarmTime.getMinutes()) {
+        alarmAlert()
+    }
+}
+
+function alarmAlert() {
+    if (Notification.permission === 'granted') {
+        const alarmIsRinging = new Notification("taskly alarm client", {
+            body: `your alarm on taskly is ringing. (name: ${alarmNameForNotification})`,
+            icon: 'taskly-timer-icon.png'
+        });
+    }
+    timerEndAudio.play();
+    timerAlertText.textContent = 'your alarm is ringing.';
+    document.getElementById('dismissNudge').textContent = 'dismiss nudge (15)';
+    timerAlarmPopup.style.display = 'flex';
+    clearAlarm();
+    dismissNudgeButtonTimer = 15;
+    clearInterval(buttonIntervalAlarm);
+    buttonIntervalAlarm = setInterval(dismissButtonTimer, 1000);
+    setTimeout(closeTimerAlert, 15000);
+}
+
+function clearAlarm() {
+    clearInterval(alarmCheck);
+    document.getElementById('clearAlarm').style.display = 'none';
+    document.getElementById('alarmPresenter').textContent = '';
+    document.getElementById('alarmNameShown').textContent = '';
 }
