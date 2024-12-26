@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="style.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!--        <link rel="icon" type="image/x-icon" href="tasklylogo.png">-->
+        <link rel="icon" type="image/x-icon" href="taskly_logo_nowords_removed.png">
         <title>Taskly</title>
     </head>
     <body>
@@ -26,7 +26,13 @@
         </div>
         <div id="fullErrors">
             <h2>all known issues</h2>
-            <p>taskly 0.2 (current release)</p>
+            <p>taskly 0.3 (current release)</p>
+            <ul>
+                <li>many taskly features are still unavailable or glitchy on webkit-based browsers. however, many improvements have been made and will keep coming in future updates. we will have taskly running on webkit-based browsers smoothly by the first stable update.</li>
+                <li>alarms are now available on taskly. there are currently no known issues but if one is found please report it using the feedback form.</li>
+                <li>many javascript features of taskly simply do not work on mobile devices. we are working to correct this but please note that taskly is not reliable and does not render properly on mobile devices.</li>
+            </ul>
+            <p>taskly 0.2</p>
             <ul>
                 <li>the preferred font for taskly's user interface is still not working on webkit-based browsers. we are working to fix this issue. however, we have made sure that fonts are consistent even when the #1 font is not available.</li>
                 <li>timers are now fully functional on taskly. timer names should be working but may show up as undefined; if they do, please contact us using the feedback form so that we can identify the issue.</li>
@@ -47,6 +53,11 @@
                 <li>timers are extremely inconsistent on taskly and often don't work. they will be fixed in the next update but are not functional at the time.</li>
                 <li>there is an issue with the feedback form in which the form is submitted before all required fields have been filled out. this will be fixed in the next update.</li>
             </ul>
+        </div>
+        <div id="timerAlarmPopup">
+            <img src="alarm_alert.png" alt="an alarm bell symbol" height="96" width="96">
+            <h2 id="timerOrAlarm"></h2>
+            <button id="dismissNudge" onclick="closeTimerAlert()">dismiss nudge (15)</button>
         </div>
         <div id="timeModule" class="timeModule">
             <h1 id="currentTime"></h1>
@@ -108,6 +119,21 @@
                     <audio id="timerAlarm" src="taskly_timer_cut.m4a" preload="auto" style="display: none;"></audio>
                 </div>
             </div>
+            <div id="alarm" class="timer">
+                <h2>alarms</h2>
+                <input type="text" id="alarmName" placeholder="alarm name">
+                <br>
+                <input type="time" id="alarmSelect">
+                <button onclick="setAlarm()">set alarm</button>
+                <div class="actualTimer">
+                    <p id="alarmNameShown"></p>
+                    <p id="alarmPresenter"></p>
+                    <button id="clearAlarm" onclick="clearAlarm()">🛑</button>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="secondRow">
             <div class="feedback">
                 <h2>feedback</h2>
                 <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
@@ -122,6 +148,11 @@
                     <p id="formMessage"></p>
                 </form>
             </div>
+        </div>
+        <div class="footer">
+            <img src="taskly_logo_words.png" alt="the taskly logo" height="36.8" width="38.6">
+            <p>copyright (©) 2024 taskly productivity in association with fieldston calculator incorporated. all rights reserved.</p>
+            <p>taskly is a free-to-use product and does not sell personal information in any way, shape, or form.</p>
         </div>
         <script src="app.js"></script>
     </body>
