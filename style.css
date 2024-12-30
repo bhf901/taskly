@@ -109,6 +109,10 @@ body {
     width: 50%;
 }
 
+#timerSetter {
+    user-select: none;
+}
+
 .timer:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -381,6 +385,51 @@ body {
     margin-right: auto;
 }
 
+.taskManager {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    text-align: center;
+    width: 50%;
+}
+
+.taskManager:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.taskManager input {
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    transition: border 0.2s ease;
+    outline: none;
+    width: 80%;
+}
+
+.taskManager input:focus {
+    border: 3px solid black;
+}
+
+.taskManager button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.taskManager button:hover {
+    background-color: lightgray;
+}
+
+.taskManager button:active {
+    background-color: gray;
+}
+
 #alarmPresenter {
     font-size: 30px;
 }
@@ -391,4 +440,34 @@ body {
 
 #alarmSelect {
     font-family: 'Lato', 'Helvetica', sans-serif;
+}
+
+#taskList {
+    display: block;
+}
+
+.taskListItem {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.taskListItem:hover {
+    text-decoration: line-through;
+}
+
+.taskListItem:hover img {
+    content: url("radio-button-checked.png");
+}
+
+.secondRow {
+    display: flex;
+}
+
+#noTasksAlert {
+    color: red;
 }
