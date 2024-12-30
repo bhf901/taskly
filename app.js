@@ -475,7 +475,7 @@ const fullscreenButton = document.getElementById('fullscreenToggle');
 function fullscreenToggle() {
     if (fullscreenStatus === false) {
         element.requestFullscreen().then(() => {
-            console.log('Fullscreen activated.');
+            console.log('Fullscreen activated through Taskly request.');
             fullscreenButton.textContent = 'exit full screen';
             fullscreenStatus = true;
         }).catch((error) => {
@@ -484,7 +484,7 @@ function fullscreenToggle() {
         });
     } else if (fullscreenStatus === true) {
         document.exitFullscreen().then(() => {
-            console.log('Fullscreen deactivated.');
+            console.log('Fullscreen deactivated through Taskly request.');
             fullscreenButton.textContent = 'enter full screen';
             fullscreenStatus = false;
         }).catch((error) => {
@@ -496,11 +496,9 @@ function fullscreenToggle() {
 
 document.addEventListener("fullscreenchange", () => {
     if (document.fullscreenElement) {
-        console.log('Fullscreen activated.');
         fullscreenButton.textContent = 'exit full screen';
         fullscreenStatus = true;
     } else {
-        console.log('Fullscreen deactivated.');
         fullscreenButton.textContent = 'enter full screen';
         fullscreenStatus = false;
     }
