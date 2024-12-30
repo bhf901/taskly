@@ -17,6 +17,7 @@
             <button>account</button>
             <button>settings</button>
             <button>help</button>
+            <button id="fullscreenToggle" onclick="fullscreenToggle()">enter full screen</button>
             <a href="https://corporate.fieldstoncalculator.com" target="_blank">developed by Fieldston Calculator</a>
         </div>
         <div id="betaNotice" class="betaNotice">
@@ -26,7 +27,15 @@
         </div>
         <div id="fullErrors">
             <h2>all known issues</h2>
-            <p>taskly 0.3 (current release)</p>
+            <p>taskly 0.4 (current release)</p>
+            <ul>
+                <li>many taskly features are still unavailable or glitchy on webkit-based browsers. however, many improvements have been made and will keep coming in future updates. we will have taskly running on webkit-based browsers smoothly by the first stable update.</li>
+                <li>task lists are now available on taskly. the client that manages task lists is generally stable and list items are saved to the browser's local storage.</li>
+                <li>because of browser features that force some websites to go idle when the tab is not selected, some timers and alarms may be inaccurate. we are investigating this issue and will have a fix soon.</li>
+                <li>many javascript features of taskly simply do not work on mobile devices. we are working to correct this but please note that taskly is still not reliable and does not render properly on mobile devices. we are working on a mobile version that the taskly website would automatically redirect to on mobile devices.</li>
+                <li>please use the feedback form to report any other issues!</li>
+            </ul>
+            <p>taskly 0.3</p>
             <ul>
                 <li>many taskly features are still unavailable or glitchy on webkit-based browsers. however, many improvements have been made and will keep coming in future updates. we will have taskly running on webkit-based browsers smoothly by the first stable update.</li>
                 <li>alarms are now available on taskly. there are currently no known issues but if one is found please report it using the feedback form.</li>
@@ -102,16 +111,28 @@
             </div>
         </div>
         <div class="mainArea">
+            <div id="taskManager" class="taskManager">
+                <h2>tasks</h2>
+                <p><i>all tasks are saved even if the browser tab is closed.</i></p>
+                <button onclick="clearAllTasks()">clear all</button>
+                <p id="noTasksAlert"></p>
+                <audio id="taskCompleteConfirmation" src="task-complete-confirmation.mp3" preload="auto" style="display: none;"></audio>
+                <div id="taskList"></div>
+                <input type="text" id="addTask" placeholder="add a task...">
+                <button id="clearAllTasks" onclick="buttonSelectForTaskList()">add task</button>
+            </div>
             <div class="timer">
                 <h2>timers</h2>
-                <input type="text" id="timerName" placeholder="timer name">
-                <br>
-                <input type="number" id="timerHours" placeholder="hours" min="0">
-                :
-                <input type="number" id="timerMinutes" placeholder="minutes" min="0" max="59">
-                :
-                <input type="number" id="timerSeconds" placeholder="seconds" min="0" max="59">
-                <button onclick="setTimer()">create timer</button>
+                <div id="timerSetter">
+                    <input type="text" id="timerName" placeholder="timer name">
+                    <br>
+                    <input type="number" id="timerHours" placeholder="hours" min="0">
+                    :
+                    <input type="number" id="timerMinutes" placeholder="minutes" min="0" max="59">
+                    :
+                    <input type="number" id="timerSeconds" placeholder="seconds" min="0" max="59">
+                    <button onclick="setTimer()">create timer</button>
+                </div>
                 <div class="actualTimer">
                     <p id="timerNameShown"></p>
                     <p id="timerPresenter"></p>
@@ -119,6 +140,9 @@
                     <audio id="timerAlarm" src="taskly_timer_cut.m4a" preload="auto" style="display: none;"></audio>
                 </div>
             </div>
+            <br>
+        </div>
+        <div class="secondRow">
             <div id="alarm" class="timer">
                 <h2>alarms</h2>
                 <input type="text" id="alarmName" placeholder="alarm name">
@@ -131,9 +155,6 @@
                     <button id="clearAlarm" onclick="clearAlarm()">🛑</button>
                 </div>
             </div>
-            <br>
-        </div>
-        <div class="secondRow">
             <div class="feedback">
                 <h2>feedback</h2>
                 <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
@@ -142,7 +163,7 @@
                     <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
                     <textarea id="message" name="message" placeholder="message*" required></textarea><br>
                     <label for="logoUpload">do you have a logo idea for taskly? submit it here.</label><br>
-                    <input type="file" id="logoUpload" name="logoUpload">
+                    <input type="file" id="logoUpload" name="logoUpload"><br>
                     <button type="reset">🚫 clear</button>
                     <button id="submitButton">✉️ send</button>
                     <p id="formMessage"></p>
