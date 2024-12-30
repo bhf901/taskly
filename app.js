@@ -407,3 +407,101 @@ function clearAlarm() {
     document.getElementById('alarmPresenter').textContent = '';
     document.getElementById('alarmNameShown').textContent = '';
 }
+
+let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
+const addTaskInput = document.getElementById('addTask');
+const taskCompleteConfirmation = document.getElementById('taskCompleteConfirmation');
+
+function refreshTaskList() {
+    document.getElementById('taskList').innerHTML = '';
+    if (addTaskInput.value !== '') {
+        taskList.push(addTaskInput.value);
+    }
+    for (let i = 0; i < taskList.length; i++) {
+        document.getElementById('taskList').innerHTML += `<div  id="task${i}" class="taskListItem" onclick="removeTaskItem(${i})"><img style="padding: 0 5px;" src="radio-button-unchecked.png" width="20" height="20"><p>${taskList[i]}</p></div>`;
+    }
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+}
+
+addTaskInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        refreshTaskList();
+        addTaskInput.value = '';
+    }
+});
+
+function buttonSelectForTaskList() {
+    refreshTaskList();
+    addTaskInput.value = '';
+}
+
+function removeTaskItem(itemNumber) {
+    document.getElementById(`task${itemNumber}`).remove();
+    taskList.splice(itemNumber, 1);
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+    taskCompleteConfirmation.currentTime = 0;
+    taskCompleteConfirmation.play();
+    refreshTaskList();
+}
+
+function clearAllTasks() {
+    if (taskList.length > 0) {
+        document.getElementById('taskList').innerHTML = '';
+        taskList = [];
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        taskCompleteConfirmation.currentTime = 0;
+        taskCompleteConfirmation.play();
+        refreshTaskList();
+    } else {
+        noTasks();
+    }
+}
+
+function noTasks() {
+    document.getElementById('noTasksAlert').textContent = 'there are no tasks to clear.'
+    setTimeout(clearNoTasks, 3000);
+}
+
+function clearNoTasks() {
+    document.getElementById('noTasksAlert').textContent = '';
+}
+
+refreshTaskList();
+
+const element = document.documentElement;
+let fullscreenStatus = false;
+const fullscreenButton = document.getElementById('fullscreenToggle');
+
+function fullscreenToggle() {
+    if (fullscreenStatus === false) {
+        element.requestFullscreen().then(() => {
+            console.log('Fullscreen activated.');
+            fullscreenButton.textContent = 'exit full screen';
+            fullscreenStatus = true;
+        }).catch((error) => {
+            console.log('Error activating fullscreen.');
+            alert('there was an issue activating fullscreen.')
+        });
+    } else if (fullscreenStatus === true) {
+        document.exitFullscreen().then(() => {
+            console.log('Fullscreen deactivated.');
+            fullscreenButton.textContent = 'enter full screen';
+            fullscreenStatus = false;
+        }).catch((error) => {
+            console.log('Error exiting fullscreen.');
+            alert('there was an issue exiting fullscreen.');
+        });
+    }
+}
+
+document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement) {
+        console.log('Fullscreen activated.');
+        fullscreenButton.textContent = 'exit full screen';
+        fullscreenStatus = true;
+    } else {
+        console.log('Fullscreen deactivated.');
+        fullscreenButton.textContent = 'enter full screen';
+        fullscreenStatus = false;
+    }
+});
