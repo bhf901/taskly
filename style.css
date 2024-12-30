@@ -471,3 +471,28 @@ body {
 #noTasksAlert {
     color: red;
 }
+
+.pageText404 {
+    text-align: center;
+}
+
+.pageText404 h1 {
+    font-size: 250px;
+}
+
+.pageText404 a {
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.pageText404 a:hover {
+    background-color: lightgray;
+}
+
+.pageText404 a:active {
+    background-color: gray;
+}
