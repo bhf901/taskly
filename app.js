@@ -1,16 +1,3 @@
-if (Notification.permission !== 'granted') {
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            console.log('User has allowed notifications.');
-            const welcomeToNotifications = new Notification("taskly notification manager", {
-                body: "this is how you'll receive notifications from taskly applications such as timers and alarms."
-            });
-        } else {
-            console.log('User has blocked access to notifications.');
-        }
-    });
-}
-
 const quotes = [
     '"strive not to be a success, but rather to be of value" -albert einstein',
     '"two roads diverged in a wood, and i—i took the one less traveled by, and that has made all the difference." -robert frost',
@@ -220,6 +207,18 @@ let timerNameForNotification;
 let timerInterval;
 
 function setTimer() {
+    if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('User has allowed notifications.');
+                const welcomeToNotifications = new Notification("taskly notification manager", {
+                    body: "this is how you'll receive notifications from taskly applications such as timers and alarms."
+                });
+            } else {
+                console.log('User has blocked access to notifications.');
+            }
+        });
+    }
     timerHours = parseInt(document.getElementById('timerHours').value);
     timerMinutes = parseInt(document.getElementById('timerMinutes').value);
     timerSeconds = parseInt(document.getElementById('timerSeconds').value);
