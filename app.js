@@ -159,13 +159,13 @@ function togglePopup() {
     }
 }
 
-const errorList = document.getElementById('fullErrors');
+const releaseNotes = document.getElementById('releaseNotes');
 
 function closeBetaMenu() {
     let betaMenuObject = document.getElementById('betaNotice');
 
     betaMenuObject.style.display = 'none';
-    errorList.style.display = 'none';
+    releaseNotes.style.display = 'none';
 }
 
 document.addEventListener('click', (event) => {
@@ -196,17 +196,17 @@ feedbackSubmit.addEventListener('click', () => {
     }
 });
 
-let issueListStatus = false;
+let releaseNotesStatus = false;
 
 function showIssues() {
-    if (issueListStatus === false) {
-        errorList.style.display = 'block';
-        document.getElementById('errorList').textContent = 'hide the full list of known issues';
-        issueListStatus = true;
-    } else if (issueListStatus === true) {
-        errorList.style.display = 'none';
-        document.getElementById('errorList').textContent = 'view the full list of known issues';
-        issueListStatus = false;
+    if (releaseNotesStatus === false) {
+        releaseNotes.style.display = 'block';
+        document.getElementById('releaseNotesButton').textContent = 'hide release notes';
+        releaseNotesStatus = true;
+    } else if (releaseNotesStatus === true) {
+        releaseNotes.style.display = 'none';
+        document.getElementById('releaseNotesButton').textContent = 'show release notes';
+        releaseNotesStatus = false;
     }
 }
 
@@ -498,7 +498,7 @@ function fullscreenToggle() {
             fullscreenButton.textContent = 'exit full screen';
             fullscreenStatus = true;
         }).catch((error) => {
-            console.log('Error activating fullscreen.');
+            console.log('Issue activating fullscreen.');
             alert('there was an issue activating fullscreen.')
         });
     } else if (fullscreenStatus === true) {
@@ -507,7 +507,7 @@ function fullscreenToggle() {
             fullscreenButton.textContent = 'enter full screen';
             fullscreenStatus = false;
         }).catch((error) => {
-            console.log('Error exiting fullscreen.');
+            console.log('Issue exiting fullscreen.');
             alert('there was an issue exiting fullscreen.');
         });
     }
@@ -595,6 +595,13 @@ function clearNotes() {
     setTimeout(clearNotesConfirmation, 3000);
 }
 
+function loadNotes() {
+    notes.value = JSON.parse(localStorage.getItem('notes'));
+    notesConfirmation.style.color = 'green';
+    notesConfirmation.textContent = 'the most recent save has been loaded.';
+    setTimeout(clearNotesConfirmation, 3000);
+}
+
 function clearNotesConfirmation() {
     notesConfirmation.textContent = '';
 }
@@ -606,3 +613,39 @@ window.addEventListener('beforeunload', (event) => {
         return areYouSure;
     }
 });
+
+const musicSecurityWarning = document.getElementById('securityWarning');
+const musicCanceled = document.getElementById('musicCanceled');
+const musicPlayer = document.getElementById('musicPlayer');
+
+function cancelMusic() {
+    musicSecurityWarning.style.display = 'none';
+    musicCanceled.style.display = 'block';
+}
+
+function approveMusic() {
+    musicSecurityWarning.style.display = 'none';
+    musicCanceled.style.display = 'none';
+    musicPlayer.style.display = 'block';
+    musicPlayer.src = 'https://embed.music.apple.com/us/playlist/top-100-global/pl.d25f5d1181894928af76c85c967f8f31';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const externalLinks = document.querySelectorAll('a');
+    externalLinks.forEach(link => {
+        link.addEventListener('click', function (event) {
+            const url = link.href;
+            if (!url.includes(window.location.hostname)) {
+                const confirmLeave = confirm('you are about to visit a website that is not affiliated with taskly. taskly cannot guarantee the security or privacy of external websites. do you wish to continue?');
+                if (!confirmLeave) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+});
+
+function acknowledgeSecurityWarning() {
+    document.getElementById('linksWarning').style.display = 'none';
+    document.getElementById('linksList').style.display = 'block';
+}
