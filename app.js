@@ -86,9 +86,18 @@ function getTime() {
     } else if (rawHour === 0 && !militaryTime.checked) {
         rawHour = 12;
         amOrPm = 'AM';
-        timeMessage.textContent = '☀️ good morning! what are your plans for the day?';
+        if (timeMessageCheckbox.checked) {
+            timeMessage.textContent = '☀️ good morning! what are your plans for the day?';
+        } else {
+            timeMessage.textContent = '';
+        }
     } else if (rawHour === 12 && !militaryTime.checked) {
         amOrPm = 'PM';
+        if (timeMessageCheckbox.checked) {
+            timeMessage.textContent = "🌅 you've made it to the second half of the day! what have you accomplished so far?"
+        } else {
+            timeMessage.textContent = '';
+        }
     }
 
     if (rawMinute < 10) {
