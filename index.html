@@ -20,20 +20,25 @@
             <button>settings</button>
             <button>help</button>
             <button id="fullscreenToggle" onclick="fullscreenToggle()">enter full screen</button>
-            <a href="https://corporate.fieldstoncalculator.com" target="_blank">developed by Fieldston Calculator</a>
+            <a href="https://corporate.fieldstoncalculator.com/" target="_blank">developed by Fieldston Calculator</a>
         </div>
         <div id="betaNotice" class="betaNotice">
             <img src="info-icon.png" width="38.4" height="38.4">
-            <p>taskly is currently in beta. some features may not work as expected. thanks for helping us make taskly better!<button id="errorList" onclick="showIssues()">view the full list of known issues</button></p>
+            <p>taskly is currently in beta. some features may not work as expected. thanks for helping us make taskly better!<button id="releaseNotesButton" onclick="showIssues()">view release notes</button></p>
             <button onclick="closeBetaMenu()"><img src="close-icon.png" alt="an X icon, used as a button to close a pop-up alert." width="38.4" height="38.4"></button>
         </div>
-        <div id="fullErrors">
-            <h2>all known issues</h2>
-            <p>taskly 0.5 (current release)</p>
+        <div id="releaseNotes">
+            <h2>release notes</h2>
+            <p>taskly 0.5.1 (current release)</p>
+            <ul>
+                <li>music and quick links widgets added.</li>
+                <li>load button added to quick notes.</li>
+            </ul>
+            <p>taskly 0.5</p>
             <ul>
                 <li>taskly features are now fully functional on webkit browsers! we are working on getting the lato font working on webkit but helvetica is being used as a placeholder for now.</li>
                 <li>quick notes and a grade calculator have been added. please report any issues with either one through the feedback form.</li>
-                <li>we are still working on the taskly mobile browser. taskly is only partially functional on mobile. timers and alarms do not work. additionally, it does not render properly on smaller devices.</li>
+                <li>we are still working on the taskly mobile website. taskly is only partially functional on mobile. timers and alarms do not work. additionally, it does not render properly on smaller devices.</li>
                 <li>because of browser features that force some websites to go idle when the tab is not selected, some timers and alarms may be inaccurate. we are investigating this issue and will have a fix soon.</li>
                 <li>we fixed issues that allowed null alarms and timers to be created.</li>
                 <li>please use the feedback form to report any other issues!</li>
@@ -145,7 +150,7 @@
                     <button onclick="calculatePointsGrade()">calculate grade</button>
                 </div>
                 <p id="finalGrade"></p><hr>
-                <p>for a more in-depth grade calculator, use the <a id="gradeCalcLink" href="https://www.fieldstoncalculator.com/calculatorhomepage">fieldston grade calculator</a>.</p>
+                <p>for a more in-depth grade calculator, use the <a class="externalLink" href="https://www.fieldstoncalculator.com/calculatorhomepage/">fieldston grade calculator</a>.</p>
             </div>
         </div>
         <div class="secondRow">
@@ -187,12 +192,51 @@
                 <p><i>just a space to take some quick notes.</i></p>
                 <textarea id="quickNotes" placeholder="start taking notes here..."></textarea><br>
                 <button onclick="clearNotes()">🚫 clear</button>
+                <button onclick="loadNotes()">🔃 load save</button>
                 <button onclick="saveNotes()">💾 save</button><br>
                 <p id="notesConfirmation"></p>
             </div>
+            <div class="music">
+                <h2>music</h2>
+                <p><i>enjoy some free samples of today's top hits.</i></p>
+                <div id="securityWarning" class="securityWarning">
+                    <img src="security-icon.png">
+                    <h4>taskly security</h4>
+                    <p>at taskly, we prioritize your security and work tirelessly to ensure that our website remains safe and secure. however, third-party applications may compromise this security by tracking your activity on taskly and across the web. we cannot verify the security of any applications or links that they provide.</p>
+                    <p>this taskly widget is attempting to load a third-party application hosted at <a class="externalLink" href="https://music.apple.com/">music.apple.com</a>. do you wish to proceed?</p>
+                    <button onclick="cancelMusic()"><b>no</b></button>
+                    <button onclick="approveMusic()">yes</button>
+                </div>
+                <div id="musicCanceled" style="display: none;">
+                    <img src="security-icon.png">
+                    <h4>taskly security</h4>
+                    <p>taskly security has blocked this third-party application from loading.</p>
+                    <button onclick="approveMusic()">load the application anyway</button>
+                </div>
+                <iframe id="musicPlayer" allow="autoplay *; encrypted-media *;" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;display:none;margin-left:auto;margin-right:auto;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src=""></iframe>
+            </div>
+        </div>
+        <div class="fourthRow">
+            <div class="quickLinks">
+                <h2>quick links</h2>
+                <p><i>quick links to get you where you need to go faster.</i></p><br>
+                <div id="linksWarning" class="externalWarning">
+                    <img src="security-icon.png">
+                    <h4>taskly security</h4>
+                    <p>at taskly, we prioritize your security and work tirelessly to ensure that our website remains safe and secure. however, third-party applications may compromise this security by tracking your activity across the web. we cannot verify the security of any applications or links that they provide.</p>
+                    <p>taskly cannot guarantee the security or privacy of external websites.</p>
+                    <button onclick="acknowledgeSecurityWarning()">acknowledge</button>
+                </div>
+                <div id="linksList" style="display:none;">
+                    <a class="quickLink" href="https://classroom.google.com/" target="_blank">google classroom</a><br><br><br>
+                    <a class="quickLink" href="https://docs.google.com/" target="_blank">google docs</a><br><br><br>
+                    <a class="quickLink" href="https://drive.google.com/" target="_blank">google drive</a><br><br><br>
+                    <a class="quickLink" href="https://www.docs.new/" target="_blank">new google doc</a><br><br><br>
+                </div>
+            </div>
             <div class="feedback">
                 <h2>feedback</h2>
-                <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
+                <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop/" method="POST">
                     <input type="text" id="name" name="name" placeholder="name*" required><br>
                     <input type="text" id="email" name="email" placeholder="email*" required><br>
                     <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
