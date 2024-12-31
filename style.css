@@ -272,14 +272,14 @@ body {
     background-color: gray;
 }*/
 
-#errorList {
+#releaseNotesButton {
     font-size: 16px;
     padding: 10px;
     color: blue;
     margin: 5px;
 }
 
-#fullErrors {
+#releaseNotes {
     margin: 10px;
     padding: 10px;
     border: 1px solid black;
@@ -596,19 +596,151 @@ body {
     color: green;
 }
 
-#gradeCalcLink {
+.externalLink {
     text-decoration: none;
     color: black;
 }
 
-#gradeCalcLink:hover {
+.externalLink:hover {
     color: gray;
 }
 
-#gradeCalcLink:active {
+.externalLink:active {
     color: lightgray;
 }
 
 button {
     color: black;
+}
+
+.music {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+    margin: 5px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.music:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#musicCanceled {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    user-select: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.music button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.music button:hover {
+    background-color: lightgray;
+}
+
+.music button:active {
+    background-color: gray;
+}
+
+.securityWarning {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    user-select: none;
+    transition: box-shadow 0.3s ease;
+}
+
+#musicCanceled:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.securityWarning:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fourthRow {
+    display: flex;
+}
+
+.quickLinks {
+    width: 50%;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    transition: box-shadow 0.2s ease;
+}
+
+.quickLinks:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.quickLink {
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.quickLink:hover {
+    background-color: lightgray;
+}
+
+.quickLink:active {
+    background-color: gray;
+}
+
+.externalWarning {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.externalWarning:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.externalWarning button {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.externalWarning button:hover {
+    background-color: lightgray;
+}
+
+.externalWarning button:active {
+    background-color: gray;
 }
