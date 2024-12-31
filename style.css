@@ -496,3 +496,119 @@ body {
 .pageText404 a:active {
     background-color: gray;
 }
+
+.gradeCalculator {
+    width: 50%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.gradeCalculator:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.gradeCalculator button {
+    background-color: white;
+    padding: 5px;
+    border: 1px solid black;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.gradeCalculator button:hover {
+    background-color: lightgray;
+}
+
+.gradeCalculator button:active {
+    background-color: gray;
+}
+
+.gradeCalculator input {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+.gradeCalculator input:focus {
+    border: 3px solid black;
+}
+
+.thirdRow {
+    display: flex;
+}
+
+.freeNotes {
+    width: 50%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.freeNotes:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.freeNotes textarea {
+    width: 90%;
+    padding: 10px;
+    height: 500px;
+    resize: none;
+    font-family: 'Lato', 'Helvetica', sans-serif;
+    border-radius: 10px;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+.freeNotes textarea:focus {
+    border: 3px solid black;
+}
+
+.freeNotes button {
+    margin: 10px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.freeNotes button:hover {
+    background-color: lightgray;
+}
+
+.freeNotes button:active {
+    background-color: gray;
+}
+
+#notesConfirmation {
+    color: green;
+}
+
+#gradeCalcLink {
+    text-decoration: none;
+    color: black;
+}
+
+#gradeCalcLink:hover {
+    color: gray;
+}
+
+#gradeCalcLink:active {
+    color: lightgray;
+}
+
+button {
+    color: black;
+}
