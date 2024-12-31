@@ -87,6 +87,8 @@ function getTime() {
         rawHour = 12;
         amOrPm = 'AM';
         timeMessage.textContent = '☀️ good morning! what are your plans for the day?';
+    } else if (rawHour === 12 && !militaryTime.checked) {
+        amOrPm = 'PM';
     }
 
     if (rawMinute < 10) {
@@ -235,29 +237,33 @@ function setTimer() {
         timerSeconds = 0;
     }
 
-    let secondsValue = parseInt(timerSeconds, 10);
-    if (secondsValue < 0) {
-        timerSeconds = 0;
-    } else if (secondsValue > 59) {
-        timerSeconds = 59;
-    }
-
-    let minutesValue = parseInt(timerMinutes, 10);
-    if (minutesValue < 0) {
-        timerMinutes = 0;
-    } else if (minutesValue > 59) {
-        timerMinutes = 59;
-    }
-
-    if (timerName.value === '') {
-        timerNameInText.textContent = 'untitled timer';
-        timerNameForNotification = 'untitled timer';
+    if (timerHours === 0 && timerMinutes === 0 && timerSeconds === 0) {
+        // do nothing
     } else {
-        timerNameInText.textContent = timerName.value;
-        timerNameForNotification = timerName.value;
-    }
+        let secondsValue = parseInt(timerSeconds, 10);
+        if (secondsValue < 0) {
+            timerSeconds = 0;
+        } else if (secondsValue > 59) {
+            timerSeconds = 59;
+        }
 
-    timerInterval = setInterval(runTimer, 1000);
+        let minutesValue = parseInt(timerMinutes, 10);
+        if (minutesValue < 0) {
+            timerMinutes = 0;
+        } else if (minutesValue > 59) {
+            timerMinutes = 59;
+        }
+
+        if (timerName.value === '') {
+            timerNameInText.textContent = 'untitled timer';
+            timerNameForNotification = 'untitled timer';
+        } else {
+            timerNameInText.textContent = timerName.value;
+            timerNameForNotification = timerName.value;
+        }
+
+        timerInterval = setInterval(runTimer, 1000);
+    }
 }
 
 const timerAlarmPopup = document.getElementById('timerAlarmPopup');
@@ -351,28 +357,33 @@ let alarmNameForNotification;
 
 function setAlarm() {
     const alarmTime = document.getElementById('alarmSelect').value;
-    document.getElementById('clearAlarm').style.display = 'flex';
-    let alarmName = document.getElementById('alarmName');
-    let shownAlarmName = document.getElementById('alarmNameShown');
-    if (alarmName.value !== '') {
-        shownAlarmName.textContent = alarmName.value;
-        alarmNameForNotification = alarmName.value;
-    } else {
-        shownAlarmName.textContent = 'untitled alarm';
-        alarmNameForNotification = 'untitled alarm';
-    }
     [alarmHours, alarmMinutes] = alarmTime.split(':');
-    if (parseInt(alarmHours) < 12 && parseInt(alarmHours) !== 0) {
-        document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} AM`;
-    } else if (parseInt(alarmHours) > 12) {
-        document.getElementById('alarmPresenter').textContent = `${alarmHours - 12}:${alarmMinutes} PM`;
-    } else if (parseInt(alarmHours) === 0) {
-        document.getElementById('alarmPresenter').textContent = `12:${alarmMinutes} AM`;
-    } else if (parseInt(alarmHours) === 12) {
-        document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} PM`;
-    }
 
-    alarmCheck = setInterval(runAlarm, 1000);
+    if (isNaN(alarmHours) || isNaN(alarmMinutes)) {
+        // does nothing
+    } else {
+        document.getElementById('clearAlarm').style.display = 'flex';
+        let alarmName = document.getElementById('alarmName');
+        let shownAlarmName = document.getElementById('alarmNameShown');
+        if (alarmName.value !== '') {
+            shownAlarmName.textContent = alarmName.value;
+            alarmNameForNotification = alarmName.value;
+        } else {
+            shownAlarmName.textContent = 'untitled alarm';
+            alarmNameForNotification = 'untitled alarm';
+        }
+        if (parseInt(alarmHours) < 12 && parseInt(alarmHours) !== 0) {
+            document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} AM`;
+        } else if (parseInt(alarmHours) > 12) {
+            document.getElementById('alarmPresenter').textContent = `${alarmHours - 12}:${alarmMinutes} PM`;
+        } else if (parseInt(alarmHours) === 0) {
+            document.getElementById('alarmPresenter').textContent = `12:${alarmMinutes} AM`;
+        } else if (parseInt(alarmHours) === 12) {
+            document.getElementById('alarmPresenter').textContent = `${alarmHours}:${alarmMinutes} PM`;
+        }
+
+        alarmCheck = setInterval(runAlarm, 1000);
+    }
 }
 
 function runAlarm() {
@@ -500,5 +511,89 @@ document.addEventListener("fullscreenchange", () => {
     } else {
         fullscreenButton.textContent = 'enter full screen';
         fullscreenStatus = false;
+    }
+});
+
+const amtOfAssignments = document.getElementById('amtOfGraded');
+const className = document.getElementById('className');
+
+function openPointsBoxes() {
+    document.getElementById('pointsModeInputs').innerHTML = '';
+    for (let i = 0; i < amtOfAssignments.value; i++) {
+        document.getElementById('pointsModeInputs').innerHTML += `
+        <hr><label for="assignment${i}Points">points earned on assignment ${i+1}:</label>
+        <input type="number" id="assignment${i}Points"><br><br>
+        <label for="assignment${i}Weight">total points for assignment ${i+1}:</label>
+        <input type="number" id="assignment${i}Weight"><br>`;
+    }
+}
+
+amtOfAssignments.addEventListener('input', openPointsBoxes);
+
+let totalPoints = 0;
+let totalWeight = 0;
+let finalGrade;
+
+function calculatePointsGrade() {
+    totalPoints = 0;
+    totalWeight = 0;
+    finalGrade = 0;
+    for (let i=0; i < amtOfAssignments.value; i++) {
+        totalPoints += parseInt(document.getElementById(`assignment${i}Points`).value);
+        totalWeight += parseInt(document.getElementById(`assignment${i}Weight`).value);
+    }
+
+    finalGrade = (totalPoints / totalWeight) * 100
+    finalGrade = finalGrade.toFixed(2);
+
+    if (isNaN(finalGrade)) {
+        document.getElementById('finalGrade').textContent = 'invalid result. please make sure all fields are filled out.'
+    } else {
+        if (className.value !== '') {
+            document.getElementById('finalGrade').textContent = `your grade in ${className.value} is: ${finalGrade}%`;
+        } else {
+            document.getElementById('finalGrade').textContent = `your grade is: ${finalGrade}%`;
+        }
+    }
+}
+
+const notes = document.getElementById('quickNotes');
+const notesConfirmation = document.getElementById('notesConfirmation');
+notes.value = JSON.parse(localStorage.getItem('notes')) || '';
+
+function saveNotes() {
+    localStorage.setItem('notes', JSON.stringify(notes.value));
+    if (notes.value === '') {
+        notesConfirmation.style.color = 'red';
+        notesConfirmation.textContent = `there's nothing to save! any previously saved notes have been cleared.`;
+    } else {
+        notesConfirmation.style.color = 'green';
+        notesConfirmation.textContent = 'notes successfully saved.';
+    }
+    setTimeout(clearNotesConfirmation, 3000);
+}
+
+function clearNotes() {
+    if (notes.value === '') {
+        notesConfirmation.style.color = 'red';
+        notesConfirmation.textContent = `there's nothing to clear!`;
+    } else {
+        notesConfirmation.style.color = 'green';
+        notesConfirmation.textContent = 'notes successfully cleared.';
+    }
+    notes.value = '';
+    localStorage.setItem('notes', JSON.stringify(notes.value));
+    setTimeout(clearNotesConfirmation, 3000);
+}
+
+function clearNotesConfirmation() {
+    notesConfirmation.textContent = '';
+}
+
+window.addEventListener('beforeunload', (event) => {
+    if (JSON.parse(localStorage.getItem('notes')) !== notes.value) {
+        const areYouSure = 'are you sure you want to leave? you have unsaved changes.';
+        event.returnValue = areYouSure;
+        return areYouSure;
     }
 });
