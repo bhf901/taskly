@@ -437,7 +437,8 @@ function refreshTaskList() {
         taskList.push(addTaskInput.value);
     }
     for (let i = 0; i < taskList.length; i++) {
-        document.getElementById('taskList').innerHTML += `<div  id="task${i}" class="taskListItem" onclick="removeTaskItem(${i})"><img style="padding: 0 5px;" src="radio-button-unchecked.png" width="20" height="20"><p>${taskList[i]}</p></div>`;
+        document.getElementById('taskList').innerHTML += `<div  id="task${i}" class="taskListItem" onclick="removeTaskItem(${i})"><img style="padding: 0 5px;" src="radio-button-unchecked.png" width="20" height="20"><p id="taskListText${i}"></p></div>`;
+        document.getElementById(`taskListText${i}`).textContent = taskList[i];
     }
     localStorage.setItem('taskList', JSON.stringify(taskList));
 }
