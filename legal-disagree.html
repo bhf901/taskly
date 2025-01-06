@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="application-name" content="taskly">
+        <meta name="description" content="a free-to-use, simple, and intuitive productivity manager.">
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="taskly_logo_nowords_removed.png">
+        <title>application opt-out | taskly</title>
+    </head>
+    <body style="text-align: center;user-select: none;-webkit-user-select: none;">
+        <p>you have indicated that you do not agree with the terms and policies of the taskly application.</p>
+        <p>you will be automatically redirected to google.com in:</p>
+        <h1 id="countdown">5</h1>
+        <script>
+            console.log(document.referrer);
+            const countdownDisplay = document.getElementById('countdown');
+            let whatNumber = 5;
+
+            function countdown() {
+                if (whatNumber === 0) {
+                    countdownDisplay.textContent = '0';
+                    window.location.href = 'https://www.google.com';
+                } else {
+                    whatNumber -= 1;
+                    countdownDisplay.textContent = String(whatNumber);
+                }
+            }
+
+            setInterval(countdown, 1000);
+        </script>
+    </body>
+</html>
