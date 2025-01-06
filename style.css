@@ -36,7 +36,6 @@ body {
 }
 
 .header a {
-    margin-left: auto;
     text-decoration: none;
     color: black;
     padding: 10px;
@@ -124,6 +123,7 @@ body {
     transition: border 0.2s ease;
     outline: none;
     width: 25%;
+    font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
 .timer input:focus {
@@ -334,7 +334,7 @@ body {
 }
 
 .footer {
-    display: flex;
+    display: inline;
     align-items: center;
     padding: 10px;
 }
@@ -393,6 +393,8 @@ body {
     transition: box-shadow 0.3s ease;
     text-align: center;
     width: 50%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .taskManager:hover {
@@ -406,6 +408,7 @@ body {
     transition: border 0.2s ease;
     outline: none;
     width: 80%;
+    font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
 .taskManager input:focus {
@@ -454,6 +457,7 @@ body {
     margin-bottom: 0;
     cursor: pointer;
     user-select: none;
+    overflow-wrap: anywhere;
 }
 
 .taskListItem:hover {
@@ -535,6 +539,7 @@ body {
     border-radius: 10px;
     outline: none;
     transition: border 0.2s ease;
+    font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
 .gradeCalculator input:focus {
@@ -743,4 +748,98 @@ button {
 
 .externalWarning button:active {
     background-color: gray;
+}
+
+.legalDocsText:first-letter {
+    margin-left: 45px;
+}
+
+.legalDocsText {
+    text-align: left;
+    margin: 0 15px;
+}
+
+.legalDocsLinks {
+    text-decoration: underline;
+    color: black;
+}
+
+.legalDocsLinks:hover {
+    text-decoration: none;
+    color: gray;
+}
+
+.legalDocsLinks:active {
+    text-decoration: none;
+    color: lightgray;
+}
+
+#legalDocsUpdateNotice {
+    display: flex;
+    background-color: salmon;
+    padding: 10px;
+    align-items: center;
+}
+
+#legalDocsUpdateNotice p {
+    margin: 5px 0 0 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hiddenTaskFromSearch {
+    display: none;
+}
+
+#taskSearch {
+    width: 100%;
+    border: none;
+}
+
+button {
+    font-family: 'Lato', 'Helvetica', sans-serif;
+}
+
+input {
+    font-family: 'Lato', 'Helvetica', sans-serif;
+}
+
+.legalDocsBody {
+    margin: 10px;
+    text-align: center;
+}
+
+.legalDocsBody button {
+    padding: 0;
+    margin: 15px 0;
+    text-decoration: underline;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.taskSearch {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 50%;
+    border: 1px solid black;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 10px;
+    transition: border 0.2s ease;
+}
+
+.taskSearch:focus-within {
+    border: 3px solid black;
+}
+
+.taskSearch img {
+    align-items: center;
+    transform: translateY(2px);
+    margin: 0 5px;
+}
+
+#UTCPresenter {
+    margin: 0;
 }
