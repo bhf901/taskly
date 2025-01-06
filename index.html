@@ -21,7 +21,10 @@
             <button>settings</button>
             <button>help</button>
             <button id="fullscreenToggle" onclick="fullscreenToggle()">enter full screen</button>
-            <a href="https://corporate.fieldstoncalculator.com" target="_blank">developed by Fieldston Calculator</a>
+        </div>
+        <div id="legalDocsUpdateNotice">
+            <img src="info-icon.png" width="38.4" height="38.4">
+            <p>taskly's <a class="legalDocsLinks" href="https://taskly.fieldstoncalculator.com/privacy-policy">privacy policy</a> and <a class="legalDocsLinks" href="https://taskly.fieldstoncalculator.com/terms-of-service">terms of service</a> were updated on january 3, 2025. please take a moment to review the changes.</p>
         </div>
         <div id="betaNotice" class="betaNotice">
             <img src="info-icon.png" width="38.4" height="38.4">
@@ -30,7 +33,16 @@
         </div>
         <div id="releaseNotes">
             <h2>release notes</h2>
-            <p>taskly 0.5.2 (current release)</p>
+            <p>taskly 0.5.3 (current release)</p>
+            <ul>
+                <li>the time module has been slightly cleaned up and simplified.</li>
+                <li>a bug was fixed where task text was not wrapping properly if it was one long word.</li>
+                <li>as we prepare to launch our google-integrated services, we are releasing a privacy policy and terms of service, as required by the google api.</li>
+                <li>a search bar has been added to search through tasks.</li>
+                <li>a bug was fixed where notification permission was not requested when loading an alarm, leading to decreased functionality.</li>
+                <li>the quick notes widget has been configured to autosave rather than show a "do you want to leave" message on closing the tab because the message was showing very often.</li>
+            </ul>
+            <p>taskly 0.5.2</p>
             <ul>
                 <li>the lato font now loads on webkit browsers running taskly.</li>
             </ul>
@@ -96,7 +108,8 @@
             <h1 id="currentTime"></h1>
             <p id="timeMessage"></p>
             <p id="inspirationalQuote"></p>
-            <h2 id="timeZone"></h2>
+            <h2 id="timeZonePresenter" onclick="showUTC()"></h2>
+            <p id="UTCPresenter"></p>
             <h2 id="currentDate"></h2>
             <button id="timeSettingsToggle" onclick="togglePopup()">⏰ date and time settings</button>
         </div>
@@ -138,10 +151,15 @@
             <div id="taskManager" class="taskManager">
                 <h2>tasks</h2>
                 <p><i>all tasks are saved even if the browser tab is closed.</i></p>
-                <button onclick="clearAllTasks()">clear all</button>
+                <button onclick="clearAllTasks()">clear all</button><br>
+                <div class="taskSearch">
+                    <label for="taskSearch"><img src="search-icon.png" width="25" height="25"></label>
+                    <input type="text" id="taskSearch" placeholder="search tasks">
+                </div>
                 <p id="noTasksAlert"></p>
                 <audio id="taskCompleteConfirmation" src="task-complete-confirmation.mp3" preload="auto" style="display: none;"></audio>
                 <div id="taskList"></div>
+                <p id="content"></p>
                 <input type="text" id="addTask" placeholder="add a task...">
                 <button id="clearAllTasks" onclick="buttonSelectForTaskList()">add task</button>
             </div>
@@ -243,11 +261,12 @@
                 <h2>feedback</h2>
                 <form id="feedbackForm" action="https://formspree.io/f/xyzyrrop" method="POST">
                     <input type="text" id="name" name="name" placeholder="name*" required><br>
-                    <input type="text" id="email" name="email" placeholder="email*" required><br>
+                    <input type="email" id="email" name="email" placeholder="email*" required><br>
                     <input type="text" id="subject" name="subject" placeholder="subject*" required><br>
                     <textarea id="message" name="message" placeholder="message*" required></textarea><br>
                     <label for="logoUpload">do you have a logo idea for taskly? submit it here.</label><br>
                     <input type="file" id="logoUpload" name="logoUpload"><br>
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <button type="reset">🚫 clear</button>
                     <button id="submitButton">✉️ send</button>
                     <p id="formMessage"></p>
@@ -256,8 +275,9 @@
         </div>
         <div class="footer">
             <img src="taskly_logo_words.png" alt="the taskly logo" height="36.8" width="38.6">
-            <p>copyright (©) 2024 taskly productivity in association with fieldston calculator incorporated. all rights reserved.</p>
+            <p>copyright (©) 2024 taskly productivity, incorporated. all rights reserved.</p>
             <p>taskly is a free-to-use product and does not sell or distribute personal information.</p>
+            <p>by continuing to use this website, you agree to taskly's <a class="legalDocsLinks" href="https://taskly.fieldstoncalculator.com/privacy-policy">privacy policy</a> and <a class="legalDocsLinks" href="https://taskly.fieldstoncalculator.com/terms-of-service">terms of service</a>.</p>
         </div>
         <script src="app.js"></script>
     </body>
