@@ -15,13 +15,15 @@ const quoteText = document.getElementById('inspirationalQuote');
 const quoteCheckbox = document.getElementById('quoteToggle');
 quoteText.textContent = quotes[Math.floor(Math.random() * 10)];
 
-function quoteToggle () {
+function quoteToggle() {
     if (quoteCheckbox.checked) {
         quoteText.textContent = quotes[Math.floor(Math.random() * 10)];
     } else {
         quoteText.textContent = '';
     }
 }
+
+let timeZoneInUTC;
 
 function getTime() {
     let time = new Date()
@@ -35,7 +37,7 @@ function getTime() {
     let amOrPm;
     const secondsToggle = document.getElementById('secondsToggle')
     const timeInText = document.getElementById('currentTime');
-    const timeZoneInText = document.getElementById('timeZone');
+    const timeZoneInText = document.getElementById('timeZonePresenter');
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const dateInText = document.getElementById('currentDate');
     const selectedColor = document.getElementById('colorSelector').value;
@@ -43,24 +45,46 @@ function getTime() {
     const timeMessage = document.getElementById('timeMessage');
     const timeMessageCheckbox = document.getElementById('messageToggle');
 
-    const timeZoneInUTC = () => {
+    timeZoneInUTC = () => {
         const offset = time.getTimezoneOffset();
         const offsetHours = Math.abs(Math.floor(offset / 60));
         const offsetMinutes = Math.abs(offset % 60);
         const positiveOrNegative = offset <= 0 ? '+' : '-';
-        return `UTC${positiveOrNegative}${offsetHours}${offsetMinutes === 0 ? "" : `${String(offsetMinutes).padStart(2, '0')}`}`;
+        if (offsetHours !== 0) {
+            return `UTC${positiveOrNegative}${offsetHours}${offsetMinutes === 0 ? "" : `:${String(offsetMinutes).padStart(2, '0')}`}`;
+        } else if (offsetHours === 0) {
+            return 'UTC';
+        }
     }
 
     let daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     const timeZoneSelector = document.getElementById('timeZoneToggle');
+    let timeZoneCountry;
+    let timeZoneCity;
+    let timeZoneCityFirst;
+    let timeZoneCitySecond;
 
     if (timeZoneSelector.checked) {
-        timeZoneInText.textContent = `${timeZoneInUTC()} | ${timeZone}`;
+        [timeZoneCountry, timeZoneCity] = timeZone.split('/');
+         [timeZoneCityFirst, timeZoneCitySecond] = timeZoneCity.split('_');
+
+        if (timeZoneCitySecond !== undefined) {
+            timeZoneInText.textContent = `${timeZoneCityFirst} ${timeZoneCitySecond}`;
+        } else if (timeZoneCitySecond === undefined) {
+            timeZoneInText.textContent = `${timeZoneCityFirst}`;
+        }
+
     } else {
         timeZoneInText.textContent = '';
     }
+
+    timeZoneInText.addEventListener('click', () => {
+        if (timeZoneSelector.checked) {
+
+        }
+    });
 
     if (rawHour < 12 && rawHour > 0) {
         amOrPm = 'AM';
@@ -148,6 +172,15 @@ function getTime() {
 
 setInterval(getTime, 1);
 
+function showUTC() {
+    if (document.getElementById('timeZoneToggle').checked) {
+        document.getElementById('UTCPresenter').textContent = timeZoneInUTC();
+        setTimeout(() => {
+            document.getElementById('UTCPresenter').textContent = '';
+        }, 3000);
+    }
+}
+
 const timeSettingsMenu = document.getElementById('dateSettings');
 const timeSettingsButton = document.getElementById('timeSettingsToggle');
 
@@ -205,7 +238,7 @@ function showIssues() {
         releaseNotesStatus = true;
     } else if (releaseNotesStatus === true) {
         releaseNotes.style.display = 'none';
-        document.getElementById('releaseNotesButton').textContent = 'show release notes';
+        document.getElementById('releaseNotesButton').textContent = 'view release notes';
         releaseNotesStatus = false;
     }
 }
@@ -365,6 +398,18 @@ let alarmCheck;
 let alarmNameForNotification;
 
 function setAlarm() {
+    if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('User has allowed notifications.');
+                const welcomeToNotifications = new Notification("taskly notification manager", {
+                    body: "this is how you'll receive notifications from taskly applications such as timers and alarms."
+                });
+            } else {
+                console.log('User has blocked access to notifications.');
+            }
+        });
+    }
     const alarmTime = document.getElementById('alarmSelect').value;
     [alarmHours, alarmMinutes] = alarmTime.split(':');
 
@@ -462,6 +507,7 @@ function removeTaskItem(itemNumber) {
     taskCompleteConfirmation.currentTime = 0;
     taskCompleteConfirmation.play();
     refreshTaskList();
+    runTaskSearch();
 }
 
 function clearAllTasks() {
@@ -608,11 +654,7 @@ function clearNotesConfirmation() {
 }
 
 window.addEventListener('beforeunload', (event) => {
-    if (JSON.parse(localStorage.getItem('notes')) !== notes.value) {
-        const areYouSure = 'are you sure you want to leave? you have unsaved changes.';
-        event.returnValue = areYouSure;
-        return areYouSure;
-    }
+    localStorage.setItem('notes', JSON.stringify(notes.value));
 });
 
 const musicSecurityWarning = document.getElementById('securityWarning');
@@ -649,4 +691,34 @@ document.addEventListener('DOMContentLoaded', function () {
 function acknowledgeSecurityWarning() {
     document.getElementById('linksWarning').style.display = 'none';
     document.getElementById('linksList').style.display = 'block';
+}
+
+const taskSearch = document.getElementById('taskSearch');
+
+taskSearch.addEventListener('input', () => {
+    const tasks = document.querySelectorAll('.taskListItem');
+    const taskSearchText = taskSearch.value.toLowerCase();
+
+    tasks.forEach(task => {
+        const taskText = task.textContent.toLowerCase();
+        if (taskText.includes(taskSearchText)) {
+            task.classList.remove('hiddenTaskFromSearch');
+        } else {
+            task.classList.add('hiddenTaskFromSearch');
+        }
+    });
+});
+
+function runTaskSearch() {
+    const tasks = document.querySelectorAll('.taskListItem');
+    const taskSearchText = taskSearch.value.toLowerCase();
+
+    tasks.forEach(task => {
+        const taskText = task.textContent.toLowerCase();
+        if (taskText.includes(taskSearchText)) {
+            task.classList.remove('hiddenTaskFromSearch');
+        } else {
+            task.classList.add('hiddenTaskFromSearch');
+        }
+    });
 }
